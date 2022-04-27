@@ -1,4 +1,4 @@
-import 'package:dev_test_github_search/src/api/base_api.dart';
+import 'package:dev_test_github_search/data/api/base_api.dart';
 import 'package:http/http.dart' as connection;
 
 class HomeApi {

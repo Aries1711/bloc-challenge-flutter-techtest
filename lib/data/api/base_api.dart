@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dev_test_github_search/constanta.dart';
+import 'package:dev_test_github_search/constants/api_constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as connection;
 
