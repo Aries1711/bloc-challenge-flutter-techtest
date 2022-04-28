@@ -1,6 +1,8 @@
+import 'package:dev_test_github_search/logic/cubit/appbar_scrolling_cubit.dart';
 import 'package:dev_test_github_search/presentation/screens/home_screen.dart';
 import 'package:dev_test_github_search/presentation/screens/main_screens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppRouter {
   // final CounterCubit _counterCubit = CounterCubit();
@@ -16,7 +18,7 @@ class AppRouter {
       case '/main':
         return MaterialPageRoute(
           builder: (_) => MainScreen(
-            title: "Home Screen kedua",
+            title: "Intro Page",
           ),
         );
       default:
