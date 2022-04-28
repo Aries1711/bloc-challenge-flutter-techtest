@@ -1,11 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:dev_test_github_search/constants/ui_constant.dart';
+import 'package:dev_test_github_search/data/models/username.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CardUsernameItem extends StatelessWidget {
-  const CardUsernameItem({
+  UsernameModel usernameData;
+
+  CardUsernameItem(
+    this.usernameData, {
     Key? key,
     required this.size,
   }) : super(key: key);
@@ -40,8 +44,7 @@ class CardUsernameItem extends StatelessWidget {
             flex: 2,
             child: CircleAvatar(
               radius: 30,
-              backgroundImage: NetworkImage(
-                  "https://github.githubassets.com/images/modules/open_graph/github-octocat.png"),
+              backgroundImage: NetworkImage(usernameData.imageUrl),
               backgroundColor: colorTransparent,
             ),
           ),
@@ -51,7 +54,7 @@ class CardUsernameItem extends StatelessWidget {
               padding:
                   EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
               child: Text(
-                'Arisqi Setyawan',
+                usernameData.name,
                 textAlign: TextAlign.left,
                 style: GoogleFonts.inter(
                   textStyle: TextStyle(

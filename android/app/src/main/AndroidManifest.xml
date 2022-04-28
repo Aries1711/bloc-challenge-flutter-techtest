@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sejutacita.dev_test_github_search">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="dev_test_github_search"
         android:name="${applicationName}"

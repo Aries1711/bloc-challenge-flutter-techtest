@@ -10,11 +10,10 @@ class HomeApi {
 
   Future<connection.Response> apiGetSearchUsername(String nameUsername) async {
     return await GETPARSE(
-        'https://api.github.com/search/repositories?q=$nameUsername');
+        'https://api.github.com/search/users?q=$nameUsername');
   }
 
   Future<connection.Response> apiGetSearchIssues(String nameIssues) async {
-    return await GETPARSE(
-        'https://api.github.com/search/repositories?q=$nameIssues');
+    return await GETPARSE('https://api.github.com/search/issues?q=$nameIssues');
   }
 }

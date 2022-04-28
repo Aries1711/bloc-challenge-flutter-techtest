@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:dev_test_github_search/constants/ui_constant.dart';
+import 'package:dev_test_github_search/data/models/issues.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CardIssuesItem extends StatelessWidget {
-  const CardIssuesItem({
+  IssuesModel issuesData;
+  CardIssuesItem(
+    this.issuesData, {
     Key? key,
     required this.size,
   }) : super(key: key);
@@ -54,7 +57,7 @@ class CardIssuesItem extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'bull garian yougurt enakk yaaa',
+                      issuesData.title,
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.inter(
@@ -72,7 +75,7 @@ class CardIssuesItem extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      '26 September 2022',
+                      issuesData.updateDates,
                       textAlign: TextAlign.left,
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
@@ -113,7 +116,7 @@ class CardIssuesItem extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'open',
+                      issuesData.issuesStates,
                       textAlign: TextAlign.left,
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(

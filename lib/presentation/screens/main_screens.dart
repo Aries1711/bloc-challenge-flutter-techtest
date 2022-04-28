@@ -3,11 +3,11 @@
 import 'package:dev_test_github_search/constants/ui_constant.dart';
 import 'package:dev_test_github_search/constants/variable.dart';
 import 'package:dev_test_github_search/logic/cubit/appbar_scrolling_cubit.dart';
+import 'package:dev_test_github_search/logic/cubit/search_username_cubit.dart';
 import 'package:dev_test_github_search/logic/cubit/tab_active_cubit.dart';
 import 'package:dev_test_github_search/presentation/widgets/card_issues_item.dart';
 import 'package:dev_test_github_search/presentation/widgets/card_repositories_items.dart';
 import 'package:dev_test_github_search/presentation/widgets/card_username_item.dart';
-import 'package:dev_test_github_search/presentation/widgets/list_item_feature.dart';
 import 'package:dev_test_github_search/presentation/widgets/tab_indexing_order.dart';
 import 'package:dev_test_github_search/presentation/widgets/widget_no_data.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +25,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final ScrollController _scrollController = ScrollController();
   var _searchController = TextEditingController();
+  String keywordsValue = "";
   GithubTypeSearch _githubType = GithubTypeSearch.User;
 
   @override
@@ -38,6 +39,9 @@ class _MainScreenState extends State<MainScreen> {
         BlocProvider<TabActiveCubit>(
           create: (context) => TabActiveCubit(),
         ),
+        BlocProvider<SearchUsernameCubit>(
+          create: (context) => SearchUsernameCubit(),
+        )
       ],
       child: Scaffold(
         body: Stack(
@@ -55,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
                         return position;
                       }
                     }
-                    return 215.0;
+                    return 220.0;
                   }())),
                   child: NotificationListener(
                     onNotification: (t) {
@@ -67,28 +71,116 @@ class _MainScreenState extends State<MainScreen> {
                     },
                     child: SingleChildScrollView(
                       controller: _scrollController,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          WidgetNoData(
+                      child:
+                          BlocBuilder<SearchUsernameCubit, SearchUsernameState>(
+                        builder: (context, state) {
+                          // RETURN VALUES FOR USERNAME
+                          if (_githubType == GithubTypeSearch.User &&
+                              state is SearchUsernameLoaded) {
+                            final data = state;
+                            if (data.usernameData.isEmpty) {
+                              return WidgetNoData(
+                                  imagePath: 'assets/images/github-octocat.png',
+                                  title: 'Upps, Data Tidak Ditemukan',
+                                  subtitle:
+                                      'Hasil pencarian untuk $keywordsValue kosong',
+                                  showButton: false,
+                                  titleButton: "",
+                                  onPressButton: () {});
+                            } else {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  for (var item in data.usernameData)
+                                    CardUsernameItem(
+                                      item,
+                                      size: size,
+                                    )
+                                ],
+                              );
+                            }
+                          } else if (state is SearchUsernameError) {
+                            return WidgetNoData(
+                                imagePath: 'assets/images/github-octocat.png',
+                                title: 'Upps, Crash',
+                                subtitle: 'To many Request Attempted',
+                                showButton: false,
+                                titleButton: "",
+                                onPressButton: () {});
+                          }
+
+                          // RETURN VALUES FOR ISSUES
+                          if (_githubType == GithubTypeSearch.Issues &&
+                              state is SearchIssuesLoaded) {
+                            final data = state;
+                            if (data.issuesData.isEmpty) {
+                              return WidgetNoData(
+                                  imagePath: 'assets/images/github-octocat.png',
+                                  title: 'Upps, Data Tidak Ditemukan',
+                                  subtitle:
+                                      'Hasil pencarian untuk $keywordsValue kosong',
+                                  showButton: false,
+                                  titleButton: "",
+                                  onPressButton: () {});
+                            } else {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  for (var item in data.issuesData)
+                                    CardIssuesItem(item, size: size)
+                                ],
+                              );
+                            }
+                          } else if (state is SearchIssuesnameError) {
+                            return WidgetNoData(
+                                imagePath: 'assets/images/github-octocat.png',
+                                title: 'Upps, Crash',
+                                subtitle: 'To many Request Attempted',
+                                showButton: false,
+                                titleButton: "",
+                                onPressButton: () {});
+                          }
+
+                          //RETURN VALUE FOR REPOSITORIES
+                          if (_githubType == GithubTypeSearch.Repositories &&
+                              state is SearchRepositoriesLoaded) {
+                            final data = state;
+                            if (data.repositoriesData.isEmpty) {
+                              return WidgetNoData(
+                                  imagePath: 'assets/images/github-octocat.png',
+                                  title: 'Upps, Data Tidak Ditemukan',
+                                  subtitle:
+                                      'Hasil pencarian untuk $keywordsValue kosong',
+                                  showButton: false,
+                                  titleButton: "",
+                                  onPressButton: () {});
+                            } else {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  for (var item in data.repositoriesData)
+                                    CardRepositoriesItem(item, size: size)
+                                ],
+                              );
+                            }
+                          } else if (state is SearchRepositoriesError) {
+                            return WidgetNoData(
+                                imagePath: 'assets/images/github-octocat.png',
+                                title: 'Upps, Crash',
+                                subtitle: 'To many Request Attempted',
+                                showButton: false,
+                                titleButton: "",
+                                onPressButton: () {});
+                          }
+                          return WidgetNoData(
                               imagePath: 'assets/images/github-octocat.png',
-                              title: 'Upps, Data kosong',
+                              title: 'Upps, Data Kosong',
                               subtitle:
-                                  'yuk memulai dengan pilih kategory (username, issues, repository) kemudian ketik keywordnya.',
+                                  'Yuk, Mulai mencari dari pilih kategory terus masukkan keyword kamu',
                               showButton: false,
                               titleButton: "",
-                              onPressButton: () {}),
-                          CardUsernameItem(size: size),
-                          CardIssuesItem(size: size),
-                          CardRepositoriesItem(size: size),
-                          CardUsernameItem(size: size),
-                          CardIssuesItem(size: size),
-                          CardRepositoriesItem(size: size),
-                          CardRepositoriesItem(size: size),
-                          CardUsernameItem(size: size),
-                          CardIssuesItem(size: size),
-                          CardRepositoriesItem(size: size),
-                        ],
+                              onPressButton: () {});
+                        },
                       ),
                     ),
                   ),
@@ -119,8 +211,24 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                           ]),
                       child: Center(
-                        child: TextField(
+                        child: TextFormField(
                           controller: _searchController,
+                          onChanged: (value) async {
+                            await Future.delayed(Duration(milliseconds: 3000));
+                            setState(() {
+                              keywordsValue = value;
+                            });
+                            if (_githubType == GithubTypeSearch.User) {
+                              BlocProvider.of<SearchUsernameCubit>(context)
+                                  .onTypeSearchDataUser(value);
+                            } else if (_githubType == GithubTypeSearch.Issues) {
+                              BlocProvider.of<SearchUsernameCubit>(context)
+                                  .onTypeSearchDataIssues(value);
+                            } else {
+                              BlocProvider.of<SearchUsernameCubit>(context)
+                                  .onTypeSearchDataRepositories(value);
+                            }
+                          },
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.search),
                             suffixIcon: IconButton(
@@ -170,6 +278,11 @@ class _MainScreenState extends State<MainScreen> {
                                     setState(() {
                                       _githubType = value!;
                                     });
+                                    if (keywordsValue != "") {
+                                      BlocProvider.of<SearchUsernameCubit>(
+                                              context)
+                                          .onTypeSearchDataUser(keywordsValue);
+                                    }
                                   },
                                 ),
                                 Text(
@@ -193,6 +306,12 @@ class _MainScreenState extends State<MainScreen> {
                                     setState(() {
                                       _githubType = value!;
                                     });
+                                    if (keywordsValue != "") {
+                                      BlocProvider.of<SearchUsernameCubit>(
+                                              context)
+                                          .onTypeSearchDataIssues(
+                                              keywordsValue);
+                                    }
                                   },
                                 ),
                                 Text(
@@ -216,6 +335,12 @@ class _MainScreenState extends State<MainScreen> {
                                     setState(() {
                                       _githubType = value!;
                                     });
+                                    if (keywordsValue != "") {
+                                      BlocProvider.of<SearchUsernameCubit>(
+                                              context)
+                                          .onTypeSearchDataRepositories(
+                                              keywordsValue);
+                                    }
                                   },
                                 ),
                                 Text(

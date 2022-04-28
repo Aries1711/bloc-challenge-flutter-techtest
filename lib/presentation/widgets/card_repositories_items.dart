@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:dev_test_github_search/constants/ui_constant.dart';
+import 'package:dev_test_github_search/data/models/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CardRepositoriesItem extends StatelessWidget {
-  const CardRepositoriesItem({
+  RepositoryModel repositoriesData;
+  CardRepositoriesItem(
+    this.repositoriesData, {
     Key? key,
     required this.size,
   }) : super(key: key);
@@ -54,7 +57,7 @@ class CardRepositoriesItem extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'bull garian yougurt enakk yaaa',
+                      repositoriesData.title,
                       textAlign: TextAlign.left,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -73,7 +76,7 @@ class CardRepositoriesItem extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      '26 September 2022',
+                      repositoriesData.createdDate,
                       textAlign: TextAlign.left,
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
@@ -97,7 +100,7 @@ class CardRepositoriesItem extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Watcher: 20',
+                      'Watcher: ${repositoriesData.totalWatcher}',
                       textAlign: TextAlign.left,
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
@@ -114,7 +117,7 @@ class CardRepositoriesItem extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Stars: 20',
+                      'Stars: ${repositoriesData.totalStars}',
                       textAlign: TextAlign.left,
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
@@ -131,7 +134,7 @@ class CardRepositoriesItem extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Forks: 20',
+                      'Forks: ${repositoriesData.totalForks}',
                       textAlign: TextAlign.left,
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(

@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_collection_literals
 
 class RepositoryModel {
-  late int id, totalForks, totalWatcher, totalStars;
+  late int id, totalForks, totalWatcher;
+  late double totalStars;
   late String title, createdDate, urlRepository;
 
   RepositoryModel({
