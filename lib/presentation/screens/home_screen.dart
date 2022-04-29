@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:dev_test_github_search/constants/device_driver_value.dart';
 import 'package:dev_test_github_search/constants/ui_constant.dart';
+import 'package:dev_test_github_search/logic/cubit/internet_cubit.dart';
 import 'package:dev_test_github_search/presentation/widgets/list_item_feature.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -85,6 +88,46 @@ class _HomeScreenState extends State<HomeScreen> {
                 subtitle:
                     "Hy, try to connect and disconnect your internet use wifi or mobile data",
               ),
+              BlocBuilder<InternetCubit, InternetState>(
+                  builder: (context, state) {
+                if (state is InternetConnected &&
+                    state.connectionType == ConnectionType.Wifi) {
+                  return Text(
+                    "TERKONEKSI KE WIFI",
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: colorRed,
+                        fontSize: 20,
+                      ),
+                    ),
+                  );
+                } else if (state is InternetConnected &&
+                    state.connectionType == ConnectionType.Mobile) {
+                  return Text(
+                    "TERKONEKSI KE DATA SELULER",
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: colorRed,
+                        fontSize: 20,
+                      ),
+                    ),
+                  );
+                } else if (state is InternetDisconnected) {
+                  return Text(
+                    "KONEKSI ANDA TERPUTUS",
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: colorRed,
+                        fontSize: 20,
+                      ),
+                    ),
+                  );
+                }
+                return Container();
+              }),
               Padding(
                 padding: EdgeInsets.only(top: 30, left: 20, right: 20),
                 child: ElevatedButton.icon(
